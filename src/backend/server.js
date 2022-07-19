@@ -1,17 +1,56 @@
 require('dotenv').config();
-const express  = require('express');
-const path     = require('path');
+const express       = require('express');
+const session       = require('express-session');
+const passport      = require('passport');
 
-const app      = express();
+/** Routes */
+const mainRoutes    = require('./routes/mainRoutes');
+const authRoutes    = require('./routes/authRoutes');
+
+/** Store  */
+const MongoStore    = require('connect-mongo');
+
+/** Env  */
+const DEVDB = process.env.MONGO_LOCAL
+const URI   = process.env.MONGO_URI
+const PORT  = process.env.PORT || 3000
+
+const app   = express();
 
 app.use(express.static('dist'));
 app.use(express.json());
 
-app.get('/', (req, res) => {
-    res.sendFile(path.join(process.cwd(), "dist/startup.html"))
+/** Session Setup */
+const store = MongoStore.create({
+    mongoUrl: URI
 })
 
+app.use(session({
+    secret: process.env.SECRET,
+    resave: false,
+    saveUninitialized: true,
+    store: store,
+    cookie: {
+        maxAge: 1000 * 60 * 60 * 24 * 7 
+    }
+}))
 
-const PORT = process.env.PORT || 3000
+/** Passport Setup */
+
+require('./config/passport');
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+
+/** Additional Helper */
+const { ensureAuthenticated }= require('./libs/routeUtils')
+
+
+/** Routes */
+
+app.use(authRoutes);
+app.use(ensureAuthenticated);
+app.use(mainRoutes);
 
 app.listen(PORT, () => console.log(`App is listening at Port ${PORT}`));

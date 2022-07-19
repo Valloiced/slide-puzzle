@@ -1,4 +1,5 @@
 import React, {useState} from 'react'
+import axios from 'axios'
 import useHandleChange from '../Hooks/customHook'
 
 export default function Login({ toggle }){
@@ -10,7 +11,13 @@ export default function Login({ toggle }){
     let loggingIn = (e) => {
         e.preventDefault(e)
 
-        
+        axios.post('/login', login)
+            .then(res => {
+                console.log(res)
+                res.data.isAllow 
+                ? window.location.href = "/explore"
+                : console.log("false")
+            })
     }
 
     return (

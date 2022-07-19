@@ -13,10 +13,16 @@
   "author": "Alloice",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.27.2",
+    "connect-mongo": "^4.6.0",
+    "crypto": "^1.0.1",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
+    "express-session": "^1.17.3",
     "mongodb": "^4.8.0",
     "mongoose": "^6.4.4",
+    "passport": "^0.6.0",
+    "passport-local": "^1.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
