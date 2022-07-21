@@ -1,28 +1,34 @@
-const app      =  require('express')()
+const app      =  require('express')();
 const passport = require('passport');
 const path     = require('path');
 
-const { genPassword } = require('../libs/passportUtils')
-const db              = require('../config/connection')
-const { User, UserStats } = db.collections
+const { genPassword } = require('../libs/passportUtils');
+const db              = require('../config/connection');
+const { User, UserStats } = db.collections;
 
-const auth = passport.authenticate('local', { failureRedirect: "/failed" })
+const { authLocal } = require('../controllers/customMiddlewares');
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(process.cwd() + "/dist/startup.html"));
 })
 
 app.get('/guest', (req, res) => {
-    //TODO
+    if(!req.user){
+        req.session.guest = true
+        res.redirect('/explore')
+    }
+    return res.redirect('/explore')
 })
 
 app.get('/check', (req, res) => {
-    console.log(req.session)
-    res.json({isAuth: req.isAuthenticated()})
+    res.json({
+        isGuest: req.session.guest,
+        isLogin: req.isAuthenticated(),
+    })
 })
 
-
-app.post('/login', auth, (req, res) => {
+app.post('/login', authLocal, (req, res) => {
+    if( req.session.guest ) req.session.guest = false
     res.json({ isAllow: true })
 })
 
@@ -78,12 +84,9 @@ app.post('/register', (req, res, next) => {
             })
         }
     })
-}, auth, ( req, res ) => {
+}, authLocal, ( req, res ) => {
+    if( req.session.guest ) req.session.guest = false
     res.json({isAllow: true})
-})
-
-app.get('/failed', (req, res, next) => {
-    res.json({isAllow: false, err: req.err})
 })
 
 app.get('/logout', (req, res) => {

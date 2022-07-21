@@ -4,8 +4,9 @@ const session       = require('express-session');
 const passport      = require('passport');
 
 /** Routes */
-const mainRoutes    = require('./routes/mainRoutes');
-const authRoutes    = require('./routes/authRoutes');
+const protectedRoutes    = require('./routes/protectedRoutes');
+const authRoutes         = require('./routes/authRoutes');
+const routes             = require('./routes/routes')
 
 /** Store  */
 const MongoStore    = require('connect-mongo');
@@ -44,13 +45,14 @@ app.use(passport.session());
 
 
 /** Additional Helper */
-const { ensureAuthenticated }= require('./libs/routeUtils')
-
+const { ensureAuthenticated }= require('./controllers/customMiddlewares')
 
 /** Routes */
 
 app.use(authRoutes);
+app.use(routes);
 app.use(ensureAuthenticated);
-app.use(mainRoutes);
+app.use(protectedRoutes);
+
 
 app.listen(PORT, () => console.log(`App is listening at Port ${PORT}`));

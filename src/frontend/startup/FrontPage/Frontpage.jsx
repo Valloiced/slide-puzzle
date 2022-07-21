@@ -1,8 +1,21 @@
-import React from 'react';
-import '../styles/front-page.css'
-import Img from '../temp-holder.jpg'
+import React, { useEffect } from 'react';
+import axios from 'axios';
+import '../../styles/front-page.css';
+import Img from '../temp-holder.jpg';
 
 export default function FrontPage({ toggle }){
+
+    useEffect(() => {
+        axios.get('/check')
+          .then(res => {
+            res.data.isGuest 
+                ? window.location.href = "/guest"
+                : res.data.isLogin 
+                ? window.location.href = "/explore"
+                : false
+          })
+        }, [])
+
     return (
         <div className="container">
 

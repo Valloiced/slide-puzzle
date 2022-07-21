@@ -3,8 +3,12 @@ const HWP = require('html-webpack-plugin')
 
 module.exports = {
     entry: {
-        startup: path.resolve(__dirname, 'src/frontend/startup/index.jsx'),
-        main: path.resolve(__dirname, 'src/frontend/main/index.jsx')
+        startup: path.resolve(__dirname, 'src/frontend/Startup/index.jsx'),
+        landing: path.resolve(__dirname, 'src/frontend/Landing/index.jsx'),
+        // profile: path.resolve(__dirname, 'src/frontend/User/Profile/index.jsx'),
+        userPuzzles: path.resolve(__dirname, 'src/frontend/User/User Puzzles/index.jsx'),
+        // gameOptions: path.resolve(__dirname, 'src/frontend/'),
+        // game: path.resolve(__dirname, 'src/frontend/'),
     }, 
     output: {
         path: path.join(__dirname, "dist"),
@@ -47,14 +51,22 @@ module.exports = {
     },
     plugins: [
         new HWP({
+            title: "Explore",
             template: "./template/main.html",
-            filename: "main.html",
-            chunks: ['main']
+            filename: "landing.html",
+            chunks: ['landing']
         }),
         new HWP({
+            title: "Puzzle Game",
             template: "./template/main.html",
             filename: "startup.html",
             chunks: ['startup']
+        }),
+        new HWP({
+            title: "Your Puzzles",
+            template: "./template/main.html",
+            filename: "userPuzzles.html",
+            chunks: ['userPuzzles']
         })
     ]
 }
