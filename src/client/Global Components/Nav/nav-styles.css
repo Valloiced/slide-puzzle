@@ -1,0 +1,40 @@
+* {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+    box-sizing: border-box;
+    z-index: 2;
+}
+
+.navbar ul {
+    position: fixed;
+    width: 100%;
+    top: 0;
+}
+
+.navbar ul, .routes, .profileRoute {
+    display: flex;
+}
+
+.navbar ul {
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 1.3em;
+    background-color: #24ECF9;
+}
+
+.navbar li {
+    list-style: none;
+}
+
+.routes {
+    align-items: center;
+    gap: 2em;
+}
+
+.profileRoute {
+    align-items: center;
+    gap: 2em;
+}

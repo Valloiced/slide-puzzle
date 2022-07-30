@@ -3,12 +3,12 @@ const HWP = require('html-webpack-plugin')
 
 module.exports = {
     entry: {
-        startup: path.resolve(__dirname, 'src/frontend/Startup/index.jsx'),
-        landing: path.resolve(__dirname, 'src/frontend/Landing/index.jsx'),
-        // profile: path.resolve(__dirname, 'src/frontend/User/Profile/index.jsx'),
-        userPuzzles: path.resolve(__dirname, 'src/frontend/User/User Puzzles/index.jsx'),
-        // gameOptions: path.resolve(__dirname, 'src/frontend/'),
-        // game: path.resolve(__dirname, 'src/frontend/'),
+        startup: path.resolve(__dirname, 'src/client/Startup/index.jsx'),
+        landing: path.resolve(__dirname, 'src/client/Landing/index.jsx'),
+        // profile: path.resolve(__dirname, 'src/client/User/Profile/index.jsx'),
+        userPuzzles: path.resolve(__dirname, 'src/client/User/User Puzzles/index.jsx'),
+        // gameOptions: path.resolve(__dirname, 'src/client/'),
+        // game: path.resolve(__dirname, 'src/client/'),
     }, 
     output: {
         path: path.join(__dirname, "dist"),

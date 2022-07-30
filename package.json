@@ -1,13 +1,13 @@
 {
   "name": "slide-puzzle",
   "version": "1.0.0",
-  "description": "A simple slide puzzle webapp",
+  "description": "A simple slide puzzle Web Application",
   "main": "server.js",
   "scripts": {
     "start": "",
     "build": "webpack --mode production",
     "front-dev": "webpack-dev-server --mode development --hot",
-    "server-dev": "nodemon src/backend/server.js"
+    "server-dev": "nodemon src/server/v1/server.js"
   },
   "keywords": [],
   "author": "Alloice",
