@@ -1,9 +1,17 @@
 const crypto = require('crypto');
+const passport = require('passport');
+const app    = require('express').Router(); 
 
 /** Credits to Zachgoll 
  *  
  * Since I copied this there
 */  
+
+let authLocal = passport.authenticate('local', {failureRedirect: "/failed"})
+
+app.get('/failed', (req, res, next) => {
+    res.json({ isAllow: false })
+})
 
 function genPassword(password) {
     var salt = crypto.randomBytes(32).toString('hex');
@@ -20,4 +28,4 @@ function isValid(password, salt, verify) {
     return password === hashVerify;
 }
 
-module.exports = { isValid, genPassword }
+module.exports = { isValid, genPassword, authLocal }

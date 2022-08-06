@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
 import axios from 'axios';
-import '../styles/front-page.css';
 import Img from '../temp-holder.jpg';
+import '../styles/front-page.css';
 
-export default function FrontPage({ toggle }){
+export default function Frontpage({ toggle }){
 
     useEffect(() => {
-        axios.get('/status')
+        axios.get('/data/status')
           .then(res => {
             let { isGuest, isLogin } = res.data
 
@@ -28,14 +28,16 @@ export default function FrontPage({ toggle }){
 
                 <div className="button--wrapper">
                     <a 
-                    className="guest--button" 
-                    href="/guest">
+                        className="guest--button" 
+                        href="/guest"
+                    >
                         Play as Guest
                     </a>
 
                     <a 
-                    className="auth--button"
-                    onClick={ toggle }>
+                        className="auth--button"
+                        onClick={ toggle }
+                    >
                         Login/Sign-Up
                     </a>
                 </div>

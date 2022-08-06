@@ -23,7 +23,6 @@ passport.deserializeUser((userId, done) => {
 
 /** Local Strategy */
 let localAuth = (username, password, done) => {
-    console.log(username, password)
 
     User.findOne({username: username}, (err, user) => {
         if(err) { return done(err) }

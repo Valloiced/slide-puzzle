@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import FrontPage from './FrontPage/Frontpage';
-import Auth from '../Global Components/Authentication/Auth';
+import FrontPage from './Frontpage/Frontpage';
+import Auth from '../global/components/Authentication/Auth';
 
 export default function App(){
 
@@ -13,9 +13,9 @@ export default function App(){
     return (
         <>   
             {
-            isAuth 
-            ? <Auth toggle={toggle} /> 
-            : <FrontPage toggle={toggle} />
+                isAuth 
+                ? <Auth toggle={toggle} /> 
+                : <FrontPage toggle={toggle} />
             }
         </>
     )

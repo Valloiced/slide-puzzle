@@ -3,12 +3,6 @@ const express       = require('express');
 const session       = require('express-session');
 const passport      = require('passport');
 
-/** Routes */
-const protected    = require('./routes/protected');
-const auth         = require('./routes/auth');
-const routes       = require('./routes/routes')
-const test         = require('./routes/test')
-
 /** Store  */
 const MongoStore    = require('connect-mongo');
 
@@ -22,7 +16,7 @@ const app   = express();
 /** Connect to Database */
 require('./config/connection')
 
-app.use(express.static('dist'));
+app.use('/', express.static('dist'));
 app.use(express.json({limit: '50mb'}));
 
 /** Session Setup */
@@ -47,13 +41,11 @@ require('./config/passport');
 app.use(passport.initialize());
 app.use(passport.session());
 
-
-/** Additional Helper */
-const { ensureAuthenticated }= require('./controllers/customMiddlewares')
-
 /** Routes */
-app.use(auth, routes, test);
-app.use(ensureAuthenticated, protected);
+
+const routes = require('./routes/routes')
+app.use(routes)
+
 
 
 app.listen(PORT, () => console.log(`App is listening at Port ${PORT}`));

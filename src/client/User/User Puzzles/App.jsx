@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import Navbar from '../../Global Components/Nav/Navbar';
-import UserPuzzleBody from './UserPuzzleBody/UserPuzzleBody';
+import Navbar from '../../global/components/Nav/Navbar';
+import UserPuzzleBody from './User Puzzle Container/UserPuzzleContainer';
 import CreatePuzzle from './Create Puzzle/CreatePuzzle';
+import "./styles/main.css"
 
 export default function App() {
 
@@ -14,7 +15,8 @@ export default function App() {
     let [ isCreate, setIsCreate ] = useState(false)
 
     useEffect(() => {
-        axios.get('/getUser')
+        // Reformat to be applicable for guest players
+        axios.get('/data/get_user')
             .then(res => {
                 setUser(res.data.user)
             })
@@ -27,9 +29,9 @@ export default function App() {
             <Navbar />
             <div className='content--body'>
                 {
-                isCreate 
-                    ? <CreatePuzzle user={user} toggle={toggleCreate} />
-                    : <UserPuzzleBody user={user} toggle={toggleCreate} />
+                    isCreate 
+                        ? <CreatePuzzle user={user} toggle={toggleCreate} />
+                        : <UserPuzzleBody user={user} toggle={toggleCreate} />
                 }      
             </div>
         </>

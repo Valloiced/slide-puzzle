@@ -1,0 +1,44 @@
+.game--option {
+    position: relative;
+    padding: 1em;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 50%;
+    background-color: orange;
+    border-radius: 15px;
+}
+
+.game--option h1 {
+    position: absolute;
+    top: 1;
+}
+
+.game--option form {
+    margin: auto;
+    display: flex;    
+    flex-direction: column;
+    align-self: center;
+    width: 80%;
+}
+
+.game--option select {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 2em;
+    padding: 1.2em;
+    border-radius: 10px;
+}
+
+.game--option option:nth-child(odd) {
+    background-color: aqua;
+}
+
+.game--option button {
+    background-color: yellow;
+    font-size: 1.1rem;
+    width: max-content; 
+    padding: 0.8em;
+    align-self: center;
+    border-radius: 10px;
+}

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import useHandleChange from "../customHook"
-import '../../styles/userPuzzles.css';
+import useHandleChange from "../../../global/helpers/handleChange"
+import '../styles/create-puzzle.css';
 
 export default function CreatePuzzle({ user, toggle }) {
 
@@ -21,8 +21,8 @@ export default function CreatePuzzle({ user, toggle }) {
             let img = new Image()
             img.src = image
             img.addEventListener('load', () => {
-                canvas.width = 300;
-                canvas.height = 300;
+                canvas.width = 400;
+                canvas.height = 400;
                 ctx.drawImage(img,  0, 0, canvas.width, canvas.height);
 
                 let newImage = canvas.toDataURL()
@@ -64,7 +64,7 @@ export default function CreatePuzzle({ user, toggle }) {
             .then(res => {
                 // if(res.data.err) { setError(true) }
                 // sessionStorage.setItem('game-session', res.data.newGame )
-                // window.location.href = "/puzzles/play"
+                // window.location.href = "/game/play"
                 window.location.href = "/your-puzzles"
             })
         }

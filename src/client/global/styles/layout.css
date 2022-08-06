@@ -1,0 +1,8 @@
+.main--body {
+    position: relative;
+    display: flex;
+    margin-top: 6em;
+    justify-content: space-around;
+    z-index: 1;
+}
+

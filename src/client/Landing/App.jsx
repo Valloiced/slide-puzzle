@@ -1,13 +1,15 @@
 import React from 'react';
-import Navbar from '../Global Components/Nav/Navbar'
-import PuzzlesContainer from './Body/PuzzlesContainer';
-
+import Navbar from '../global/components/Nav/Navbar'
+import PuzzlesContainer from './Puzzles Container/Puzzles Container';
+import './styles/puzzle-card.css'
 
 export default function App(){
     return (      
         <>
             <Navbar />
-            <PuzzlesContainer />
+            <div className='main--body'>  
+                <PuzzlesContainer />   
+            </div>
         </>
     )
 }

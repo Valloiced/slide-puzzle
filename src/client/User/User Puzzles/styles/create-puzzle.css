@@ -1,0 +1,89 @@
+.create--container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 auto;
+    padding: 2em;
+    background-color: aliceblue;
+    width: 70%;
+    min-height: 100vh;
+}
+
+.create--container h1, .create--container h2 {
+    font-size: 2rem;
+    z-index: 1;
+}
+
+.image--container {
+    width: 80%;
+    border: 2px solid black;
+    border-radius: 20px;
+    z-index: 1;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    margin: 1em;
+    width: 80%;
+}
+
+
+form input[type=text], form select, textarea { 
+    background-color: yellow;
+    padding: 1em;
+    margin-bottom: 1em;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+form label {
+    color: gray;
+    font-size: 0.8rem;
+}
+
+form select {
+    text-align: center;
+}
+
+.flexed {
+    display: flex;
+}
+
+.puzzlenameinput--wrapper {
+    width: 80%;
+}
+
+.imagereader--wrapper {
+    width: 20%;
+    padding: 0;
+    background-color: none;
+}
+
+.imagereader--wrapper, .puzzlenameinput--wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.description--input {
+    max-width: 100%;
+    max-height: 8rem;
+}
+
+form button {
+    align-self: center;
+    background-color: yellow;
+    width: 50%;
+    padding: 1em;
+    font-weight: 700;
+    border: 2px solid gray;
+    border-radius: 20px;
+}
+
+form button:hover {
+    cursor: pointer;
+    color: gray;
+    background-color: white;
+}
+

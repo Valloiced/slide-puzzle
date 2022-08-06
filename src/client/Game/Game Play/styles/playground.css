@@ -1,0 +1,11 @@
+.playground {
+    display: flex;
+    flex-direction: column;
+    background-color: red;
+    width: 55vw;
+}
+
+.reshuffle {
+    padding: 1em;
+    width: fit-content;
+}
