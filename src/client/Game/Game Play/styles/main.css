@@ -1,8 +1,15 @@
 /* Main Body */
 .content--body {
-    margin-top: 6em;
+    padding-top: 6em;
+    padding-bottom: 1em;
     position: relative;
     display: flex;
     justify-content: space-around;
     z-index: 1;
+}
+
+@media (max-width: 500px){
+    .content--body{
+        flex-direction: column;
+    }
 }

@@ -29,6 +29,20 @@ export default function DisplayPuzzles({ creator, session, puzzleName, image, ga
         // window.location.href = "/game"
     }
 
+    let hours = Math.floor(timeTaken / 3600)
+
+    let minutes = timeTaken / 3600 > 0 
+        ? Math.floor((timeTaken % 3600) / 60)
+        : Math.floor(timeTaken / 60)
+
+    let seconds = timeTaken / 60 > 0 
+        ? timeTaken % 60
+        : timeTaken
+
+    let reformat = (time) => {
+        return time >= 10 ? time : "0" + time
+    }
+
     return (
         <div className='displaypuzzle--card'>
 
@@ -57,7 +71,7 @@ export default function DisplayPuzzles({ creator, session, puzzleName, image, ga
 
                         <div className="time--taken">
                             <img className="icon" src={Time}></img>
-                            <p>{timeTaken}</p>
+                            <p>{reformat(hours)}:{reformat(minutes)}:{reformat(seconds)}</p>
                         </div>
                     </div>
 

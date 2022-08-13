@@ -1,108 +1,153 @@
 import React, { useState, useEffect, useLayoutEffect, useRef } from 'react';
+import axios from 'axios'
+import generate from './Logic/generate';
+import gameController from './Logic/controller';
+import { localAutoSave, serverSave } from './Logic/save';
+import winChecker from './Logic/checkWin';
+import Timecounter from './Components/Time Counter';
 import '../styles/playground.css';
-// import UpdaterForTimerIguess
-// import TheGameLogicBabbyyyy
 
-class Tile {
-    constructor(tile, x, y){
-        this.x = x,
-        this.y = y,
-        this.tile = tile
-    }
-}
-
-// TODO: Complete Logic Here
-export default function Playground({ image, gameSize, timeTaken, pattern }){
+export default function Playground({ isGuest, sessionID, image, gameSize, timeTaken, pattern, isFinished, setGame }){
     
     let canvasRef = useRef(null);
-    let boardRef = useRef(null)
+    let tilesContainerRef = useRef(null)
 
-    let [ tiles, setTiles ] = useState([])
-    let [ globalCtx, setGlobalCtx ] = useState()
-    let [ globalBoardCtx, setGlobalBoardCtx ] = useState()
-    let [ globalDimension, setGlobalDimension ] = useState()
+    let currTilesRef = useRef([]);
+    let [ currTiles, setCurrTiles] = useState([])
+    let [ currPattern, setCurrPattern ] = useState([])
 
-    let generate = (ctx) => {
-        let tempTiles = []
-        for(let x = 0; x < gameSize; x++){
-            for(let y = 0; y < gameSize; y++){
-                let dataImage = ctx.getImageData(
-                    dimension * x, dimension * y,
-                    dimension, dimension
-                )
+    let [ currTilePos, setCurrTilePos ] = useState(0)
 
-                tempTiles.push(new Tile(dataImage, dimension * x, dimension * y))
-                console.log(tiles)
-            }
-        }
-    }
+    let [ currTime, setCurrTime ] = useState(0)
 
-    let render = () => {
-        for(let i = 0; i < tiles.length; i++){
-            for(let j = 0; j < tiles[i].length; j++){
-                let tileImg = tiles[i][j].tile
-                let tile = tiles[i][j]
-
-                tile.x = dimension * j
-                tile.y = dimension * i 
-
-                ctx.putImageData(tileImg, dimension * j, dimension * i)
-            }
-        }
-    } 
-
-    useEffect(() => {
-        const canvas = canvasRef.current
-        const ctx = canvas.getContext('2d')
-
-        const board = boardRef.current
-        const boardCtx = board.getContext('2d')
-
-        let dimension = 600 // Max Width but this could change
-        let margin = 5 
-        let row = dimension / gameSize - margin
-        let column = dimension / gameSize - margin
-
-        canvas.width = 
-        canvas.height = 
-        board.width =
-        board.height = dimension
- 
-        let img = new Image()
-        img.src = image
-        img.addEventListener('load', () => {
-            ctx.drawImage(img, 0, 0, canvas.width, canvas.height)   
-            // generate(ctx)
-            let tempTiles = []
-            dimension = dimension / gameSize - margin
-            for(let x = 0; x < gameSize; x++){
-                for(let y = 0; y < gameSize; y++){
-                    let dataImage = ctx.getImageData(
-                        dimension * x, dimension * y,
-                        dimension, dimension
-                    )
-    
-                    console.log(dataImage)
-                    tempTiles.push(new Tile(dataImage, dimension * x, dimension * y))
-                    console.log(tiles)
-                }
-            }
-            setGlobalCtx(ctx)
-            setGlobalBoardCtx(boardCtx)
-            setGlobalDimension(dimension / gameSize - margin)
-        })
-
+    /** Setup the puzzle board */
+    useLayoutEffect(() => {     
+        setCurrPattern(pattern)
+        setCurrTime(timeTaken)
+        
+        generate(
+            canvasRef, 
+            tilesContainerRef, 
+            currTilesRef,
+            image, 
+            pattern, 
+            gameSize,
+            setCurrTiles,
+            setCurrTilePos
+        )
+        
     }, [image])
 
-    // useEffect(() => {
-    // }, [globalBoardCtx])
+    /** Controller Logic */
+    useEffect(() => {
+        let formattedPattern = formatTo2d(currPattern, gameSize)
+
+        const options = {
+            pattern: formattedPattern,
+            currTile: {
+                index: currTilePos, 
+                canvas: currTilesRef.current[currTilePos]  
+            },
+            blankTile: currTilesRef.current[0],
+            gameSize: gameSize,
+            setters: {
+                setCurrPattern,                                
+                setCurrTilePos
+            }
+        }
+
+        gameController(options)
+
+    }, [currTilePos])
+
+    /** Auto Save */
+    useEffect(() => {
+        if(!isGuest){ 
+            serverSave(sessionID, currPattern, currTime)
+        }
+
+        localAutoSave(sessionID, currPattern, currTime)
+     
+    }, [currPattern, currTime])
+    
+    useEffect(() => {
+        if(isFinished && !isGuest){
+            axios.post('/game/validate', {
+                sessionID: sessionID,
+                pattern: currPattern,
+                timeTaken: currTime
+            })
+            .then(res => {
+                console.log(res)
+                setGame(false)
+            })
+        }
+    
+        winChecker(currPattern, setGame)    
+    }, [currPattern])
+
+    
+    let shuffle = () => {
+        let tempPattern = [...currPattern]
+        let currentIndex = gameSize * gameSize
+
+        while(currentIndex != 0){
+            let randomIndex = Math.floor(Math.random() * currentIndex)
+            currentIndex--
+
+            [tempPattern[currentIndex], tempPattern[randomIndex]] 
+        = [tempPattern[randomIndex], tempPattern[currentIndex]];
+        }
+
+        setCurrTiles([])
+        setCurrPattern(tempPattern)
+        currTilesRef.current = []
+
+        generate(
+            canvasRef, 
+            tilesContainerRef, 
+            currTilesRef,
+            image, 
+            tempPattern, 
+            gameSize,
+            setCurrTiles,
+            setCurrTilePos
+        )
+    }
 
     return (
         <div className='playground'>
-            <h2>Timer: </h2>
-            <canvas ref={canvasRef} style={{display: "none"}} />
-            <canvas ref={boardRef} style={{backgroundColor: "blue"}} />
-            <button className="reshuffle">Reshuffle Button</button>
+
+            {!isFinished && <Timecounter currentTime={currTime} updater={setCurrTime} />}
+            <canvas ref={canvasRef} className="hidden--canvas" />
+
+            <div className="border">
+                <div className="tiles--container" ref={tilesContainerRef}>
+                    {currTiles}
+                </div>
+            </div>
+            <button className="reshuffle" onClick={shuffle}>Reshuffle Button</button>
         </div>
     )
+}
+
+/** Helpers */
+
+// function createBlankImage(ctx, dimensions){
+//     let blankTile = ctx.createImageData(dimensions, dimensions)
+//         for(let i = 0; i < blankTile.data.length; i++){
+//             blankTile.data[i] = 255
+//     }
+//     return blankTile
+// }
+
+function formatTo2d(pattern, gameSize){
+    let newFormat = []
+
+    for(let i = 0; i < pattern.length; i += gameSize){
+        let part = pattern.slice(i, i + gameSize)
+        newFormat.push(part)
+    }
+
+    return newFormat
 }

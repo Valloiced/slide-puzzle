@@ -6,83 +6,86 @@ import Playground from './Playground/Playground';
 import "./styles/main.css"
 
 export default function App() {
-
-  let [ user, setUser ] = useState({
-    userId: "",
-    username: ""
-  });
   
-  let [ session, setSession ] = useState("");
+  let [ isGuest, setIsGuest ] = useState(false)
+  let [ session, setSession ] = useState(false);
+  let [ puzzleData, setPuzzleData ] = useState(false)
 
-  let [ puzzleData, setPuzzleData ] = useState({
-      puzzleID: "",
-      puzzleName: "",
-      description: "",
-      addedBy: "",
-      addedOn: "",
-      image: ""
-  });
-  
-  // Get user data
-  // Reformat to be applicable for guest players
-  useEffect(() => {
-    axios.get('/data/get_user')
-        .then(res => {
-            setUser(res.data.user)
-        })
-  }, [])
+  let [ isFinished, setIsFinished ] = useState(false)
 
-  // Get session data
+  //Get session data
   useEffect(() => {
+    if(session) { return }
+
     axios.get('/game/play?get_data=session')
         .then(res => {
-          if(res.data){
-
             let sessions = JSON.parse(localStorage.getItem('game-session'))
 
             sessions.forEach(s => {
               if(s._id == res.data){
+                if(s.isGuest ) { setIsGuest(true) }
                 setSession(s)
+                return 
               }
             })
-
-          }
         })
-  }, [user])
+  }, [])
 
   // Get puzzle data
   useEffect(() => {
-    if(session != ""){
+    if(!session) { return }
+
       axios.get(`/game/play?get_data=puzzle&id=${session.puzzleID}`)
         .then(res => {
             if(res.data){
               setPuzzleData(res.data.puzzle_data)
             }
         })
-    }
   }, [session])
 
+  let background = {
+    position: 'absolute',
+    width: '100%',
+    backgroundImage: `url(${puzzleData.image})`,
+    backgroundRepeat: `no-repeat`,
+    backgroundSize: `cover`,
+    backgroundAttachment: `fixed`,
+    backgroundPosition: `center`
+  }
 
   return (
-    <>
+    <div style={background}>
       <Navbar />
-      <div className="content--body">
-        <ImageContainer 
-          puzzleID={puzzleData.puzzleID} 
-          puzzleName={puzzleData.puzzleName} 
-          description={puzzleData.description}
-          addedOn={puzzleData.addedOn} 
-          addedBy={puzzleData.addedBy}
-          image={puzzleData.image}
-          gameSize={session.gameSize}
-        />
-        <Playground 
-          image={puzzleData.image}
-          gameSize={session.gameSize}
-          timeTaken={session.timeTaken}
-          pattern={puzzleData.pattern}
-        />
-      </div>
-    </>
+
+      <div className="content--body" style={{backgroundColor: 'rgba(255,255,255,0.7)'}}>
+        { 
+        session && puzzleData       
+          ?
+            <>
+              <ImageContainer 
+                puzzleID={puzzleData.puzzleID} 
+                puzzleName={puzzleData.puzzleName} 
+                description={puzzleData.description}
+                addedOn={puzzleData.addedOn} 
+                addedBy={puzzleData.addedBy}
+                image={puzzleData.image}
+                gameSize={session.gameSize}
+              />
+              <Playground 
+                isGuest={isGuest}
+                sessionID={session._id}
+                image={puzzleData.image}
+                gameSize={session.gameSize}
+                timeTaken={session.timeTaken}
+                pattern={session.pattern}
+                isFinished={isFinished}
+                setGame={setIsFinished}
+              />
+            </>
+           
+            : <h1>Loading Game....</h1>
+      }
+       </div>
+    </div>
   )
 }

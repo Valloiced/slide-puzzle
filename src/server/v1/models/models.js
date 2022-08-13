@@ -43,6 +43,7 @@ let UserStatsSchema = Schema({
 })
 
 let UserPuzzleSchema = Schema({
+    isGuest: Boolean,
     userID: Schema.Types.ObjectId,
     puzzleID: Schema.Types.ObjectId,
     gameSize: Number,

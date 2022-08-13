@@ -38,6 +38,7 @@ export default function App() {
         // Reformat to be applicable for guest players
         axios.get('/data/get_user')
             .then(res => {
+                if(res.data.isGuest) { return }
                 setUser(res.data.user)
             })
     }, [])

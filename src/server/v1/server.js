@@ -44,6 +44,7 @@ app.use(passport.session());
 /** Routes */
 
 const routes = require('./routes/routes')
+app.use(require('./routes/test'))
 app.use(routes)
 
 

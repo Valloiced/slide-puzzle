@@ -1,11 +1,46 @@
 .playground {
+    position: relative;
     display: flex;
     flex-direction: column;
-    background-color: red;
+    padding: 0.5em;
+    background-color: rgba(158, 135, 135, 0.377);
     width: 55vw;
 }
 
+.hidden--canvas {
+    position: absolute;
+    width: 90%;
+    opacity: 0;
+}
+
+.border {
+    display: flex;
+    align-self: center;
+    width: fit-content;
+    border: 10px solid black;
+}
+.tiles--container {
+    position: relative;
+    background-color: transparent;
+}
+
+
 .reshuffle {
+    position: absolute;
+    display: flex;
+    align-self: center;
     padding: 1em;
     width: fit-content;
+    bottom: 2em;
+}
+
+.tiles:hover {
+    cursor: pointer;
+    transform: skewX(30deg);
+}
+
+@media (max-width: 500px){
+    .playground{
+        width: 100vw;
+    }
 }

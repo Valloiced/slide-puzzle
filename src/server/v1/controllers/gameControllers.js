@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const { bindToSession } = require('../libs/handlerUtils')
+const { bindToSession, generatePattern } = require('../libs/handlerUtils')
 
 const db     = require('../models/models')
 const { Puzzle, PuzzleStats, UserGameSession} = db.collections
@@ -50,30 +50,12 @@ router.post('/create', async (req, res, next) => {
         return next()
     } 
     
-    let pattern = []
-    let boardSize = gameSize * gameSize
-
-    for(let i = 0; i < boardSize; i++ ){
-        pattern.push(i)
-    }
-
-    /* Fisher-Yates Shuffle */
-    let currentIndex = boardSize
-
-    while(currentIndex != 0){
-        let randomIndex = Math.floor(Math.random() * currentIndex)
-        currentIndex--
-
-        [pattern[currentIndex], pattern[randomIndex]] 
-    = [pattern[randomIndex], pattern[currentIndex]];
-    }
-    
     try {
         let newGameSession = new UserGameSession({
             userID: userId,
             puzzleID: pid,
             gameSize: gameSize,
-            pattern: pattern,
+            pattern: generatePattern(gameSize),
             timeTaken: 0,
             isFavorite: false,
             isFinished: false
@@ -94,20 +76,47 @@ router.post('/create', async (req, res, next) => {
             throw new Error("Saving Unsuccessful")
         }
 
-        bindToSession({ direct_to_puzzle: null, in_game: session._id}, req)
+        let save = bindToSession({ direct_to_puzzle: null, in_game: session._id}, req)
 
-        if(bindToSession){
+        if(save){
             return res.json({
                 isAllow: true,
                 session: session // Save this to the localStorage in the client-side
             })
         }
 
-        throw new Error("Saving Unsuccessful")
+        res.json({isAllow: false})
     }
     catch(e) {
         res.send(e)
     }
+
+
+}, (req, res) => {
+    const { gameSize, pid } = req.body  
+
+    // I just need the session Id
+    let newGuestSession = new UserGameSession({
+        isGuest: true,
+        puzzleID: pid,
+        gameSize: gameSize,
+        pattern: generatePattern(gameSize),
+        timeTaken: 0,
+        isFinished: false
+    })
+
+    
+    let save = bindToSession({ direct_to_puzzle: null, in_game: newGuestSession._id }, req)
+    console.log(newGuestSession)
+
+    if(save){
+        return res.json({
+            isAllow: true,
+            session: newGuestSession // Save this to the localStorage in the client-side
+        })
+    }
+
+
 })
 
 router.get('/play?', async (req, res) => {
@@ -120,19 +129,25 @@ router.get('/play?', async (req, res) => {
     } else if(get_data == "puzzle"){
         const puzzleId = id
 
-        let puzzle = await Puzzle.findById(puzzleId)
-
-        if(!puzzle){
-            throw new Error("No Puzzle Found")
-        }
-        
-        let revertImg = Buffer.from(puzzle.image).toString('ascii')
-        return res.json({
-            puzzle_data: {
-            ...puzzle._doc, 
-            image: revertImg
+        try {
+            let puzzle = await Puzzle.findById(puzzleId)
+    
+            if(!puzzle){
+                throw new Error("No Puzzle Found")
             }
-        });
+            
+            let revertImg = Buffer.from(puzzle.image).toString('ascii')
+            return res.json({
+                puzzle_data: {
+                ...puzzle._doc, 
+                image: revertImg
+                }
+            });
+        }
+        catch(e){
+            console.log(e)
+            req.send(e)
+        }
     }
 })
 
@@ -147,6 +162,42 @@ router.post('/continue/:sessionId', (req, res) => {
         req.session.in_game = sessionId
         res.json({ redirect: true, session: session_doc })
     })
+})
+
+router.put('/save-session', async (req, res) => {
+    const { sessionID, newPattern, newTime } = req.body
+
+    try {
+        if(!sessionID){
+            throw new Error("No session Id provided")
+        }
+    
+        let session = await UserGameSession.findById(sessionID)
+    
+        if(!session){
+            throw new Error("No session found");
+        }
+    
+        if(session.pattern == newPattern || session.timeTaken == newTime){
+            return res.send("No changes found")
+        }
+    
+        session.pattern = newPattern
+        session.timeTaken = newTime
+        session.lastSession = Date.now()
+    
+        await session.save()
+    
+        res.json({ saved: true });
+    }
+    catch(e) {
+        console.log(e)
+        res.json({ saved: false })
+    }
+})
+
+router.post('/validate', (req, res) => {
+    res.send("Bitch")
 })
 
 module.exports = router;

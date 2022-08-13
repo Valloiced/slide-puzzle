@@ -34,7 +34,7 @@ export default function Navbar({ setSearchOptions = null, dataToSet }) {
         <header>
             <nav className="navbar">
                 <ul>
-                    <li className="Logo">Logo</li> {/** Place logo here */}
+                    <li className="Logo">Slido</li> {/** Place logo here */}
 
 
                     <li className="searchbar">{ setSearchOptions != null && <h1>bitch</h1>}</li>

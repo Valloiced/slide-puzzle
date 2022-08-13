@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import useHandleChange from "../../../global/helpers/handleChange"
+import storeGameSession from '../../../global/helpers/storeGameSession'
 import '../styles/create-puzzle.css';
 
 export default function CreatePuzzle({ user, toggle }) {
@@ -62,10 +63,8 @@ export default function CreatePuzzle({ user, toggle }) {
             // TODO (the error handler and the game route)
             axios.post(`/your-puzzles/user/${user.userId}/create`, requestBody)
             .then(res => {
-                // if(res.data.err) { setError(true) }
-                // sessionStorage.setItem('game-session', res.data.newGame )
-                // window.location.href = "/game/play"
-                window.location.href = "/your-puzzles"
+                storeGameSession(res.data.newGame)
+                window.location.href = "/game"
             })
         }
     } 
@@ -75,6 +74,7 @@ export default function CreatePuzzle({ user, toggle }) {
         let context = canvas.getContext('2d')
 
         draw(context, canvas)
+        
     }, [image])
 
     return (

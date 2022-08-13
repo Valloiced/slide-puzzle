@@ -8,6 +8,8 @@ export default function UserPuzzleBody({ user, toggle }) {
     let [ puzzles, setPuzzles ] = useState([])
 
     useEffect(() => {
+        if(user.username == ""){ return }
+
         axios.get(`/your-puzzles/user/${user.userId}`)
             .then(res => {
                 setPuzzles(res.data.puzzles || [])
@@ -16,7 +18,7 @@ export default function UserPuzzleBody({ user, toggle }) {
 
     let displayPuzzles = puzzles.map(p => {
         return <DisplayPuzzles
-                    key={p.puzzleId}
+                    key={p.sessionId}
                     creator={user.username}
                     session={p.sessionId}
                     puzzleName={p.puzzleName}

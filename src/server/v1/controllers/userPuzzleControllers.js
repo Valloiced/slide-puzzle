@@ -1,6 +1,7 @@
 const router = require('express').Router()
 const db     = require('../models/models')
 const { UserGameSession, Puzzle, PuzzleStats } = db.collections
+const { bindToSession, generatePattern } = require('../libs/handlerUtils')
 
 //TODO (done)
 //Reformat next time to be applicable for sorting
@@ -89,7 +90,7 @@ router.post('/user/:userId/create', async (req, res) => {
             userID: userId,
             puzzleID: newPuzzle._id,
             gameSize: gameSize,
-            pattern: [],
+            pattern: generatePattern(gameSize),
             timeTaken: 0,
             isFavorite: false,
             isFinished: false
@@ -97,7 +98,7 @@ router.post('/user/:userId/create', async (req, res) => {
     
         let newPuzzleStats = new PuzzleStats({
             puzzleID: newPuzzle._id,
-            numOfPlayersPlayed: 0,
+            numOfPlayersPlayed: 1,
             numOfPlayersFinished: 0,
             leaderboardID: null
         })
@@ -123,7 +124,8 @@ router.post('/user/:userId/create', async (req, res) => {
             isFinished: session.isFinished
         }
     
-        res.json({ newGame: response })
+        bindToSession({ in_game: session._id }, req)
+        res.json({ newGame: session })
     }
     catch(e){
         res.send(e)
