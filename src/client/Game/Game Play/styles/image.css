@@ -27,15 +27,18 @@
 }
 
 .puzzle--name {
+    font-family: var(--displayfo-b);
     margin-bottom: 0.5em;
     font-weight: 800;
 }
 
 .description {
+    width: 90%;
+    word-wrap: break-word;
+    font-family: var(--displayfo-li);
     font-size: 0.8rem;
-    color: darkgreen;
     text-align: center;
-    font-style: italic;
+    color: #332c1e;
 }
 
 .sub {
@@ -49,6 +52,10 @@
     display: flex;
     align-items: center;
     margin: 1em;
+}
+
+.icon--wrapper p {
+    font-family: var(--textfo);
 }
 
 .icon {

@@ -3,6 +3,7 @@ import axios from 'axios';
 import Navbar from '../../global/components/Nav/Navbar'
 import ImageContainer from './Image/Image Container'
 import Playground from './Playground/Playground';
+import Submit from './Submit/Submit'
 import "./styles/main.css"
 
 export default function App() {
@@ -54,38 +55,43 @@ export default function App() {
   }
 
   return (
-    <div style={background}>
-      <Navbar />
+    <>
+      <div style={background}>
+        <Navbar />
 
-      <div className="content--body" style={{backgroundColor: 'rgba(255,255,255,0.7)'}}>
-        { 
-        session && puzzleData       
-          ?
-            <>
-              <ImageContainer 
-                puzzleID={puzzleData.puzzleID} 
-                puzzleName={puzzleData.puzzleName} 
-                description={puzzleData.description}
-                addedOn={puzzleData.addedOn} 
-                addedBy={puzzleData.addedBy}
-                image={puzzleData.image}
-                gameSize={session.gameSize}
-              />
-              <Playground 
-                isGuest={isGuest}
-                sessionID={session._id}
-                image={puzzleData.image}
-                gameSize={session.gameSize}
-                timeTaken={session.timeTaken}
-                pattern={session.pattern}
-                isFinished={isFinished}
-                setGame={setIsFinished}
-              />
-            </>
-           
-            : <h1>Loading Game....</h1>
-      }
-       </div>
-    </div>
+        <div className="content--body">
+          { 
+          session && puzzleData       
+            ?
+              <>
+                <ImageContainer 
+                  puzzleID={puzzleData.puzzleID} 
+                  puzzleName={puzzleData.puzzleName} 
+                  description={puzzleData.description}
+                  addedOn={puzzleData.addedOn} 
+                  addedBy={puzzleData.addedBy}
+                  image={puzzleData.image}
+                  gameSize={session.gameSize}
+                />
+                <Playground 
+                  isGuest={isGuest}
+                  sessionID={session._id}
+                  image={puzzleData.image}
+                  gameSize={session.gameSize}
+                  timeTaken={session.timeTaken}
+                  pattern={session.pattern}
+                  isFinished={isFinished}
+                  setGame={setIsFinished}
+                />
+              </>
+            
+              : <h1>Loading Game....</h1>
+        }
+        </div>
+      </div>
+
+
+      { isFinished && <Submit sessionID={session._id} isGuest={isGuest} setGame={setIsFinished} />}
+    </>
   )
 }

@@ -27,7 +27,7 @@ export default function App() {
     return (
         <>
             <Navbar />
-            <div className='content--body'>
+            <div className='main--body'>
                 {
                     isCreate 
                         ? <CreatePuzzle user={user} toggle={toggleCreate} />

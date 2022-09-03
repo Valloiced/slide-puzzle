@@ -11,10 +11,10 @@ const DEVDB = process.env.MONGO_LOCAL
 const URI   = process.env.MONGO_URI
 const PORT  = process.env.PORT || 3000
 
-const app   = express();
+const app   = express()
 
 /** Connect to Database */
-require('./config/connection')
+require('./config/connection').connection
 
 app.use('/', express.static('dist'));
 app.use(express.json({limit: '50mb'}));

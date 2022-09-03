@@ -6,9 +6,10 @@ import Trash  from "../../../../global/assets/trash.png"
 import User   from "../../../../global/assets/user.png"
 import Play   from "../../../../global/assets/play-color.png"
 import storeGameSession from "../../../../global/helpers/storeGameSession";
+import '../../styles/create-puzzle.css'
 import '../../styles/userpuzzle-card.css'
 
-export default function DisplayPuzzles({ creator, session, puzzleName, image, gameSize, timeTaken, isFinished }) {
+export default function DisplayPuzzles({ user, session, puzzleName, image, gameSize, timeTaken, puzzles, setPuzzles }) {
     let cardImageBg = {
         background: `url(${image})`,
         backgroundSize: '100% 100%',
@@ -26,7 +27,18 @@ export default function DisplayPuzzles({ creator, session, puzzleName, image, ga
                     window.location.href = "/game"
                 }
             })
-        // window.location.href = "/game"
+    }
+
+    let handleDelete = () => {
+        axios.delete(`/your-puzzles/user/${user.userId}/delete?s_id=${session}`)
+            .then(res => {
+                if(res.data.deleted){
+                    let deleted = res.data.deletedPuzzle
+                    let newPuzzles = puzzles.filter((p) => p.sessionId != deleted._id)
+
+                    setPuzzles(newPuzzles)
+                }
+            })
     }
 
     let hours = Math.floor(timeTaken / 3600)
@@ -54,12 +66,12 @@ export default function DisplayPuzzles({ creator, session, puzzleName, image, ga
                 </div>
             </div>
 
-            <div className="card--info">
+            <div className={`card--info ${"s" + gameSize}`}>
 
                 <div className="row">               
                     <h2 className="puzzle--name">{puzzleName}</h2>
 
-                    <img className="icon" src={Trash}></img>
+                    <img className="icon" src={Trash} onClick={handleDelete}></img>
                 </div>
 
                 <div className="row">
@@ -77,7 +89,7 @@ export default function DisplayPuzzles({ creator, session, puzzleName, image, ga
 
                     <div className="creator">
                         <img className="icon" src={User}></img>
-                        <p>{creator}</p>
+                        <p>{user.username}</p>
                     </div>
                 </div>
 

@@ -12,7 +12,7 @@ export default function DisplayPuzzles({ creator, puzzleId, puzzleName, image, n
         background: `url(${image})`,
         backgroundSize: '100% 100%',
         width: '100%',
-        height: '30vh',
+        height: '20vh',
         borderRadius: '20px 20px 10px 10px'
     }
 

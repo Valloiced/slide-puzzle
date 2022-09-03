@@ -19,7 +19,7 @@ app.use(authControllers)
 app.use('/data', dataControllers)
 app.use('/explore', landingControllers)
 app.use('/your-puzzles', ensureAuthenticated, userPuzzlesControllers)
-app.use('/home', ensureAuthenticated, userControllers)
+app.use('/profile', ensureAuthenticated, userControllers)
 app.use('/game', gameControllers)
 
 module.exports = app

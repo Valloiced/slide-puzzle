@@ -1,13 +1,17 @@
-.main--body {
+.content--body {
     margin: 6em auto;
-    width: 90%;
+    width: 93%;
+}
+
+p {
+    font-family: var(--textfo)
 }
 
 .puzzles--container {
     display: grid;
     margin-top: 2em;
     gap: 2em;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 2fr));
+    grid-template-columns: repeat(4, calc(93% / 4));
 }
 
 .displaypuzzle--card {
@@ -21,6 +25,7 @@
 }
 
 .card--info {
+    font-size: 0.8rem;
     word-wrap: break-word;
     width: 100%;
     padding: 1em;
@@ -29,6 +34,7 @@
 }
 
 .puzzle--name {
+    font-family: var(--displayfo);
     white-space: nowrap;
     width: 90%;
     overflow: hidden;
@@ -41,13 +47,13 @@
 
 .creator, .times--played, .date--added {
     display: flex;
-    gap: 0.3em;
+    gap: 0.4em;
     align-items: center;
 }
 
 .sub--info {
     display: flex;
-    gap: 1em;
+    gap: 1.2em;
 }
 
 .play {
@@ -59,18 +65,17 @@
 }
 
 .creator p {
-    max-width: 15ch;
-    text-overflow: ellipsis;
+    max-width: 9ch;
 }
 
 .row {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 0.3em;
+    margin-bottom: 1em;
 }
 
 .icon {
-    width: 1.4rem;
+    width: 1rem;
 }
 
 .play--button {
@@ -78,22 +83,9 @@
     justify-content: center;
     align-items: center;
     width: 100%;
-    height: 30vh;
+    height: 20vh;
     transform: scale(0);
     transition: all 300ms;
-}
-
-.create--button {
-    position: fixed;
-    left: 50%;
-    transform: translateX(-50%);
-    bottom: 2em;
-    font-size: 1rem;
-    font-weight: 700;
-    padding: 1em;
-    border-radius: 20px;
-    border: 2px solid black;
-    box-shadow: 0px 0px 10px lightgreen;
 }
 
 .displaypuzzle--card:hover {
@@ -105,4 +97,25 @@
     border-radius: 20px;
     background: rgba(0, 0, 0, 0.6);
     transform: scale(1);
+}
+
+
+@media (max-width: 850px){
+    
+    .puzzles--container {
+        grid-template-columns: repeat(3, calc(93% / 3));
+    }
+}
+
+@media (max-width: 740px){
+
+    .puzzles--container {
+        grid-template-columns: repeat(2, calc(93% / 2));
+    }
+}
+
+@media (max-width: 500px) {
+    .puzzles--container {
+        grid-template-columns: repeat(1, calc(93%));
+    }
 }

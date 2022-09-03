@@ -34,20 +34,6 @@ export default function GameOptions({ puzzleId, puzzleStatsId, userId }){
             })
     }
 
-    // let storeGameSession = (session) => {
-    //     let game_session_store = localStorage.getItem('game-session');
-
-    //     if(!game_session_store || game_session_store == ""){
-    //         localStorage.setItem('game-session', JSON.stringify([session]));
-    //         window.location.href = "/game"
-    //     }
-
-    //     let newGame = [ ...JSON.parse(game_session_store), session]
-    //     localStorage.setItem('game-session', JSON.stringify(newGame))
-
-    //     window.location.href = "/game"
-    // }
-
     return (
         <div className="game--option">
             <h1>Game Options: </h1>

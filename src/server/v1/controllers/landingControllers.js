@@ -6,7 +6,7 @@ const { Puzzle, PuzzleStats } = db.collections
 router.get('/puzzles?', (req, res) => {
     let query = req.query.q || "." // Default to all
     let sort  = req.query.s || "puzzleName" // Default to sort by puzzle name
-    let limit = req.query.lim || 10
+    let limit = req.query.lim || 20
 
     if(sort == "any") { sort = "puzzleName"}
 
@@ -25,14 +25,14 @@ router.get('/puzzles?', (req, res) => {
     .exec((err, puzzle) => {
         let puzzleStatsIDs = puzzle.map(p => p.puzzleStatsID)
 
-        PuzzleStats.find({ id: [...puzzleStatsIDs] }, (err, stats) => {
+        PuzzleStats.find({ _id: [...puzzleStatsIDs] }, (err, stats) => {
             let response = []
 
             const statsIds = stats.map(s => s.id)
             for(let i = 0; i < stats.length; i++){
                 
                 let referencedIndex = statsIds.indexOf(String(puzzleStatsIDs[i]))
-                let referencedStats = stats[referencedIndex]
+                let referencedStats = stats[referencedIndex];
                 let revertImg = Buffer.from(puzzle[i].image).toString('ascii');
                 
                 response.push({

@@ -6,8 +6,10 @@
   "scripts": {
     "start": "",
     "build": "webpack --mode production",
+    "connect-db": "node src/server/v1/config/connection",
     "front-dev": "webpack-dev-server --mode development --hot",
-    "server-dev": "nodemon src/server/v1/server.js"
+    "server-dev": "nodemon src/server/v1/server.js",
+    "connect-dev": "npm run server-dev && npm run connect-db"
   },
   "keywords": [],
   "author": "Alloice",
@@ -19,12 +21,14 @@
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "express-session": "^1.17.3",
+    "googleapis": "^107.0.0",
     "mongodb": "^4.8.0",
     "mongoose": "^6.4.4",
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "swiper": "^8.3.2"
   },
   "devDependencies": {
     "@babel/core": "^7.18.6",

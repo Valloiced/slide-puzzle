@@ -19,19 +19,20 @@ export default function UserPuzzleBody({ user, toggle }) {
     let displayPuzzles = puzzles.map(p => {
         return <DisplayPuzzles
                     key={p.sessionId}
-                    creator={user.username}
+                    user={user}
                     session={p.sessionId}
                     puzzleName={p.puzzleName}
                     image={p.image}
                     gameSize={p.gameSize}
                     timeTaken={p.timeTaken}
-                    isFinished={p.isFinished}
+                    puzzles={puzzles}
+                    setPuzzles={setPuzzles}
                 />
     })
 
     return (
         <>
-            <h1>Your Recent Puzzles: </h1>
+            <h1 className='header'>Your Recent Puzzles: </h1>
 
             <div className='puzzles--container'>{displayPuzzles}</div>
 

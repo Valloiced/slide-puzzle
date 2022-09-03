@@ -4,14 +4,20 @@ const { Puzzle } = db.collections
 
 dataRouter.get('/get_user', (req, res) => {
     if(!req.user){ return res.redirect('/data/status') }
+    
+    let { username, id, profileImg, joinedOn, UserStatsID } = req.user
 
-    let { username, id, profileImg } = req.user
+    if(profileImg){
+        profileImg = Buffer.from(profileImg).toString('ascii')
+    }
     
     res.json({
         user: { 
             userId: id,
             username: username, 
-            profileImage: profileImg || null
+            u_statsId: UserStatsID,
+            profileImage: profileImg || null,
+            joinedOn: joinedOn
     }})
 })
 

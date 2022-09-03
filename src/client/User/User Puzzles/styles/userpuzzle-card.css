@@ -1,35 +1,24 @@
-
-
-/* TODO: Seperate this into parts(css) */
-
-
-
-* {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-}
-
-/* Main Body */
-.content--body {
-    margin: 6em auto;
-    width: 90%;
-}
-
 /* User Puzzles Page */
+
+p, button {
+    font-family: var(--textfo);
+}
+
+.header {
+    font-family: var(--displayfo);
+}
 
 .puzzles--container {
     display: grid;
     margin-top: 2em;
-    gap: 2em;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 2fr));
+    gap: 2.3em;
+    grid-template-columns: repeat(3, calc(90% / 3));
 }
 
 .displaypuzzle--card {
     position: relative;
     display: flex;
     flex-direction: column;
-    width: 100%;
     border-radius: 20px;
     box-shadow: 0px 0px 15px gray;
     z-index: 1;
@@ -39,11 +28,11 @@
     word-wrap: break-word;
     width: 100%;
     padding: 1em;
-    background-color: orange;
     border-radius: 0px 0px 20px 20px;
 }
 
 .puzzle--name {
+    font-family: var(--displayfo);
     white-space: nowrap;
     width: 90%;
     overflow: hidden;
@@ -106,4 +95,18 @@
     border-radius: 20px;
     background: rgba(0, 0, 0, 0.6);
     transform: scale(1);
+}
+
+@media (max-width: 850px){
+    
+    .puzzles--container {
+        grid-template-columns: repeat(2, calc(90% / 2));
+    }
+}
+
+@media (max-width: 600px){
+    
+    .puzzles--container {
+        grid-template-columns: repeat(1, calc(90%));
+    }
 }

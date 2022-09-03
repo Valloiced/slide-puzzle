@@ -1,3 +1,62 @@
+/* Global style */
+* {
+    font-family: Torus, Neosans, Inter, Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+    box-sizing: border-box;
+    z-index: 2;
+}
+
+/* Typeface */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+@font-face {
+    font-family: 'Neosans';
+    src: url(../../global/assets/fonts/Neo\ Sans\ Std\ Regular.otf) format('opentype');
+}
+
+@font-face {
+    font-family: 'Neosans-b';
+    src: url(../../global/assets/fonts/Neo\ Sans\ Std\ Bold.otf) format('opentype');
+}
+
+@font-face {
+    font-family: 'Neosans-l';
+    src: url(../../global/assets/fonts//Neo\ Sans\ Std\ Light.otf) format('opentype');
+}
+
+@font-face {
+    font-family: 'Torus';
+    src: url(../../global/assets/fonts/torus/TorusPro-Regular.ttf) format('truetype')
+}
+
+@font-face {
+    font-family: 'Torus-b';
+    src: url(../../global/assets/fonts/torus/TorusPro-Bold.ttf) format('truetype');
+}
+
+@font-face {
+    font-family: 'Torus-l';
+    src: url(../../global/assets/fonts/torus/TorusPro-Light.ttf) format('truetype');
+}
+
+@font-face {
+    font-family: 'Tourus-li';
+    src: url(../../global/assets/fonts/torus/TorusPro-LightItalic.ttf) format('truetype');
+}
+
+:root {
+    --textfo: Neosans, Inter, Arial;
+    --textfo-b: Neosans-b, Inter, Arial;
+    --textfo-l: Neosans-l, Inter, Arial;
+    --displayfo: Torus, Inter, Helvetica;
+    --displayfo-b: Torus-b, Inter, Helvetica;
+    --displayfo-l: Torus-l, Inter, Helvetica;
+    --displayfo-li: Torus-li, Inter, Helvetica;
+}
+
 .main--body {
     position: relative;
     display: flex;

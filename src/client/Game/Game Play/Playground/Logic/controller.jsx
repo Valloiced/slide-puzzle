@@ -25,8 +25,6 @@ export default function controller({pattern, currTile, blankTile, gameSize, sett
     if(currTilePosX + 1 <= gameSize - 1){
         if(pattern[currTilePosY][currTilePosX + 1] == blankTileIndex){          
 
-            
-
             swap2d(
                 pattern, 
                 [currTilePosY, currTilePosX],
@@ -41,8 +39,6 @@ export default function controller({pattern, currTile, blankTile, gameSize, sett
 
     if(currTilePosY - 1 >= 0){
         if(pattern[currTilePosY - 1][currTilePosX] == blankTileIndex){
-
-            
 
             swap2d(
                 pattern, 
@@ -59,7 +55,6 @@ export default function controller({pattern, currTile, blankTile, gameSize, sett
     if(currTilePosY + 1 <= gameSize - 1){
         if(pattern[currTilePosY + 1][currTilePosX] == blankTileIndex){
 
-           
             swap2d(
                 pattern, 
                 [currTilePosY, currTilePosX],

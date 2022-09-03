@@ -4,6 +4,7 @@ import Navbar from '../../global/components/Nav/Navbar';
 import ImageContainer from './Image/Image Container';
 import GameOptions from './Options/Game Options';
 import './styles/main.css';
+import '../../global/styles/game--size.css'
 
 export default function App() {
 

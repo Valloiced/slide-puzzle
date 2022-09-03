@@ -1,5 +1,5 @@
 * {
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: Torus, Neosans, Inter, Arial, Helvetica, sans-serif;
     margin: 0;
     padding: 0;
     text-decoration: none;
@@ -21,8 +21,8 @@
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    padding: 1.3em;
-    background-color: #24ECF9;
+    padding: 0.8em 1.5em 0.8em 1.2em;
+    background-color: #FFCA7A;
 }
 
 .navbar li {
@@ -37,4 +37,24 @@
 .profileRoute {
     align-items: center;
     gap: 2em;
+}
+
+.profileRoute a {
+    color: #332c1e;
+    text-decoration: none;
+}
+
+.user--settings {
+    display: flex;
+    gap: 1em;
+    align-items: center;
+}
+
+.pfimage {
+    width: 40px;
+    height: 40px;
+}
+
+.username {
+    font-size: 2rem;
 }

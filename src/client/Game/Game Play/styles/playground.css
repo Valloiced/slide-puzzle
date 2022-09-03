@@ -24,6 +24,9 @@
     background-color: transparent;
 }
 
+.time--counter {
+    font-family: var(--textfo-b);
+}
 
 .reshuffle {
     position: absolute;

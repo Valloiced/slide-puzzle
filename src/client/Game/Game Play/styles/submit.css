@@ -1,0 +1,128 @@
+.submit--container {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+}
+
+.message--wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    background-color: white;
+    padding: 3em;
+    border-radius: 15px;
+    animation: done 800ms forwards;
+}
+
+/* User */
+
+.user--display h1 {
+    font-family: var(--textfo-b);
+    font-size: 2.5rem;
+}
+
+.user--display p {
+    font-family: var(--textfo);
+    font-size: 1.2rem;
+}
+
+.user--display h1,
+.user--display p
+{
+    margin-bottom: 1em;
+}
+
+.submit--buttons {
+    display: flex;
+    gap: 2em;
+    margin-top: 4em;
+}
+
+.submit--buttons button {
+    padding: 1em 2em;
+    background-color: white;
+    border-radius: 20px;
+    font-size: 1rem;
+    font-weight: 700;
+    transition: all 250ms;
+}
+
+.submit--buttons button:nth-child(1) {
+    color: rgba(0, 0, 0, 0.800);
+    background-color: rgba(255, 0, 0, 0.5);
+}
+
+.submit--buttons button:nth-child(2) {
+    color: rgba(0, 0, 0, 0.800);
+    background-color: rgba(0, 218, 29, 0.8);
+}
+
+.submit--buttons button:hover {
+    cursor: pointer;
+}
+
+.submit--buttons button:hover:nth-child(1) {
+    color: rgba(255, 0, 0, 0.8);
+    background-color: white;
+}
+
+.submit--buttons button:hover:nth-child(2) {
+    color: rgba(0, 218, 29, 0.9);
+    background-color: white;
+}
+
+/* Guest */
+
+.guest--display h1 {
+    margin-bottom: 1em;
+    font-size: 2.3rem;
+}
+
+.message {
+    margin: 1em;
+    font-size: 1.1rem;
+}
+
+.message span {
+    text-decoration: underline;
+}
+
+.warning {
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: red;
+}
+
+.authentication {
+    width: 100%;
+}
+
+
+.back {
+    top: 1.5em;
+    left: 1.5em;
+}
+
+@keyframes done {
+    0%{
+        font-size: 1.3em;
+        padding: 3em;
+        background-color: rgb(253, 253, 127);
+    }
+
+    50% {
+        background-color: rgb(253, 253, 127);
+    }
+
+    100% {
+        padding: 3em;
+        background-color: white;
+    }
+}

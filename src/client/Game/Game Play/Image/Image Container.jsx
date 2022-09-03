@@ -6,7 +6,7 @@ import '../styles/image.css'
 export default function ImageContainer({ puzzleName, description, addedBy, addedOn, image, gameSize }) {
 
     return (
-        <div className="image--container">
+        <div className={`image--container ${"s" + gameSize}`}>
             <Image 
                 image={image} 
             />

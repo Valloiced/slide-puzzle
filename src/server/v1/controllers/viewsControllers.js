@@ -31,9 +31,9 @@ router.get('/options', ( req, res ) => {
 })
 
 /** Profile*/
-// router.get('/home', (req, res) => {
-
-// })
+router.get('/profile', (req, res) => {
+    res.sendFile(path.join(ROOT_DIRECTORY, "/dist/profile.html"))
+})
 
 /** User Puzzles*/
 router.get('/your-puzzles', ensureAuthenticated, (req, res) => {

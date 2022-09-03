@@ -22,6 +22,10 @@
     width: 80%;
 }
 
+.game--option label {
+    font-family: var(--textfo);
+}
+
 .game--option select {
     font-size: 1.1rem;
     font-weight: 700;
@@ -30,8 +34,47 @@
     border-radius: 10px;
 }
 
-.game--option option:nth-child(odd) {
-    background-color: aqua;
+.game--option option {
+    font-family: var(--textfo-b);
+}
+
+.game--option option:nth-child(1) {
+    background-color: #FFEB84;
+}
+
+.game--option option:nth-child(2) {
+    background-color: #FFC46D;
+}
+
+.game--option option:nth-child(3) {
+    background-color: #FF9254;
+}
+
+.game--option option:nth-child(4) {
+    background-color: #FF7373;
+}
+
+.game--option option:nth-child(5) {
+    background-color: #99FF89;
+}
+
+.game--option option:nth-child(6) {
+    background-color: #61BDFF;
+}
+
+.game--option option:nth-child(7) {
+    color: #fff;
+    background-color: #9B6DFF;
+}
+
+.game--option option:nth-child(8) {
+    color: #fff;
+    background-color: #AE2AFF;
+}
+
+.game--option option:nth-child(9) {
+    color: #fff;
+    background-color: #8300B0;
 }
 
 .game--option button {

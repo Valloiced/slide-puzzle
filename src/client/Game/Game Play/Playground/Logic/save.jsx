@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export function localAutoSave( id, pattern, timeTaken ) {
+export function localAutoSave( sessionID, pattern, timeTaken ) {
     if(!pattern || pattern.length == 0){
         return
     }
@@ -8,7 +8,7 @@ export function localAutoSave( id, pattern, timeTaken ) {
     let session = JSON.parse(localStorage.getItem('game-session'))
     
     session.map((s, i) => {
-        if(s._id == id){
+        if(s._id == sessionID){
             let save = {...s, pattern: pattern, timeTaken: timeTaken}
             
             session[i] = save

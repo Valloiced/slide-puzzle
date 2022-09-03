@@ -1,7 +1,8 @@
 const router = require('express').Router()
 const db     = require('../models/models')
-const { UserGameSession, Puzzle, PuzzleStats } = db.collections
-const { bindToSession, generatePattern } = require('../libs/handlerUtils')
+const { UserStats, UserGameSession, Puzzle, PuzzleStats, PuzzleLeaderboard } = db.collections
+const { bindToSession } = require('../libs/handlerUtils')
+const { generatePattern } = require('../libs/gameUtils')
 
 //TODO (done)
 //Reformat next time to be applicable for sorting
@@ -9,7 +10,7 @@ router.get('/user/:userId', async (req, res) => {
     let { userId } = req.params
 
     try {
-        let session = await UserGameSession.find({ userID: userId })
+        let session = await UserGameSession.find({ userID: userId, isFinished: false })
         if(!session){
             throw new Error("There's no game session found for the user")
         }
@@ -26,7 +27,6 @@ router.get('/user/:userId', async (req, res) => {
                 puzzleID: curr.puzzleID,
                 gameSize: curr.gameSize,
                 timeTaken: curr.timeTaken,
-                isFavorite: curr.isFavorite,
                 isFinished: curr.isFinished,
                 lastSession: curr.lastSession 
             })
@@ -70,12 +70,10 @@ router.get('/user/:userId', async (req, res) => {
     }
 })
 
-// TODO (90%)
-// Just polish the error handler
 router.post('/user/:userId/create', async (req, res) => {
     let { userId } = req.params
     let { username, image, puzzleName, gameSize, description } = req.body
-
+    let { UserStatsID } = req.user
     
     try {
         let newPuzzle = new Puzzle({
@@ -85,14 +83,12 @@ router.post('/user/:userId/create', async (req, res) => {
             addedBy: { userID: userId, username: username},
         })
     
-        //Change this, puzzle must be the one who had the favorite not session
         let newGameSession = new UserGameSession({
             userID: userId,
             puzzleID: newPuzzle._id,
             gameSize: gameSize,
             pattern: generatePattern(gameSize),
             timeTaken: 0,
-            isFavorite: false,
             isFinished: false
         })
     
@@ -100,35 +96,65 @@ router.post('/user/:userId/create', async (req, res) => {
             puzzleID: newPuzzle._id,
             numOfPlayersPlayed: 1,
             numOfPlayersFinished: 0,
-            leaderboardID: null
+        })
+
+        let newPuzzleLeaderboard = new PuzzleLeaderboard({
+            puzzleID: newPuzzle._id,
+            gameSize: {
+                "2x2": [],
+                "3x3": [],
+                "4x4": [],
+                "5x5": [],
+                "6x6": [],
+                "7x7": [],
+                "8x8": [],
+                "9x9": [],
+                "10x10": []
+            }
         })
     
         newPuzzle.puzzleStatsID = newPuzzleStats._id
+        newPuzzleStats.leaderboardID = newPuzzleLeaderboard._id
 
         let puzzle  = await newPuzzle.save()
         let p_stats = await newPuzzleStats.save()
+        let p_leaderboard = await newPuzzleLeaderboard.save()
         let session = await newGameSession.save()
     
-        if(!puzzle || !p_stats || !session){
+        if(!puzzle || !p_stats || !session || !p_leaderboard){
             throw new Error("Saving Unsuccessful")
         }
-    
-        let revertImg = Buffer.from(puzzle.image).toString('ascii');
-        let response = {
-            ...puzzle,
-            image: revertImg,
-            sessionId: session.id,
-            gameSize: session.gameSize,
-            pattern: session.pattern,
-            timeTaken: session.timeTaken,
-            isFinished: session.isFinished
-        }
+
+        let u_stats = await UserStats.findById(UserStatsID)
+        
+        u_stats.numOfPuzzlesCreated++
+
+        await u_stats.save()
     
         bindToSession({ in_game: session._id }, req)
         res.json({ newGame: session })
     }
     catch(e){
-        res.send(e)
+        res.status(400).send(e)
+    }
+})
+
+router.delete('/user/:userID/delete?', async (req, res) => {
+    const { userID } = req.params
+    const { s_id } = req.query
+
+    try {
+        const deleted = await UserGameSession.findOneAndDelete({ userID: userID, _id: s_id })
+    
+        if(!deleted) {
+            throw new Error("Failed to delete session.")
+        }
+    
+        res.json({ deleted: true, deletedPuzzle: deleted })
+    }
+    catch(e) {
+        console.log(e)
+        res.status(400).json({ deleted: false })
     }
 })
 

@@ -5,7 +5,7 @@ module.exports = {
     entry: {
         startup: path.resolve(__dirname, 'src/client/Startup/index.jsx'),
         landing: path.resolve(__dirname, 'src/client/Landing/index.jsx'),
-        // profile: path.resolve(__dirname, 'src/client/User/Profile/index.jsx'),
+        profile: path.resolve(__dirname, 'src/client/User/Profile/index.jsx'),
         userPuzzles: path.resolve(__dirname, 'src/client/User/User Puzzles/index.jsx'),
         gameOptions: path.resolve(__dirname, 'src/client/Game/Game Options/index.jsx'),
         game: path.resolve(__dirname, 'src/client/Game/Game Play/index.jsx')
@@ -69,6 +69,12 @@ module.exports = {
             template: "./template/main.html",
             filename: "landing.html",
             chunks: ['landing']
+        }),
+        new HWP({
+            title: "Profile",
+            template: "./template/main.html",
+            filename: "profile.html",
+            chunks: ['profile']
         }),
         new HWP({
             title: "Puzzle Game",

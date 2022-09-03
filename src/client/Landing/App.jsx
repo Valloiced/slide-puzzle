@@ -7,7 +7,7 @@ export default function App(){
     return (      
         <>
             <Navbar />
-            <div className='main--body'>  
+            <div className='content--body'>  
                 <PuzzlesContainer />   
             </div>
         </>

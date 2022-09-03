@@ -1,0 +1,218 @@
+/* * {
+    border: 0.5px solid black;
+    color: #362C1C;
+} */
+
+.info--container {
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(to bottom, #FFD493, #B061FF);
+    width: 90%;
+    height: 200vh;
+    margin-top: 3em;
+}
+
+.info--container h2 {
+    font-family: var(--displayfo-l);
+    margin: 0.25em 0.5em;
+}
+
+.info--wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 4em;
+    padding: 0 2em;
+}
+
+.profile--container {
+    display: flex;
+    justify-content: space-between;
+    padding: 1em;
+    background-color: #fff2dfe3;
+}
+
+.profile {
+    display: flex;
+    flex-direction: column;
+    padding: 1em;
+    width: 85%;
+    font-size: 0.7rem;
+    color: #362c1cd9;
+}
+
+.profile--wrapper {
+    background-color: #FFDCA7;
+    align-self: center;
+    width: 95%;
+    padding: 0.5em;
+} 
+
+.main--info {
+    justify-content: space-between;
+}
+
+.main--info, .user{
+    display: flex;
+} 
+
+.user {
+    align-items: center;
+    gap: 1em;
+}
+
+.user img{
+    width: 4rem;
+}
+
+.user h1 {
+    font-family: var(--displayfo);
+    font-size: 3rem;
+}
+
+.skillpoint {
+    align-self: flex-end;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.skillpoint p {
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+.skillpoint h2 {
+    font-family: var(--displayfo-l);
+    font-size: 2rem;
+}
+
+.user--stats {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 4em 0 2em;
+    margin-top: 1em;
+}
+
+.user--stats h2 {
+    font-family: var(--displayfo);
+}
+
+.left--stats, .right--stats {
+    display: flex; 
+}
+
+
+
+
+
+
+.profileimage--wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 15%;
+    padding: 0.5em;
+}
+
+.image--section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1em;
+}
+
+.image {
+    border: 2px solid #362c1cd9;
+    border-radius: 20%;
+}
+
+.edit {
+    width: 1.4rem;
+}
+
+input[type="file"] {
+    width: 100%;
+}
+
+.joinedOn {
+    color: #362c1cd9;
+}
+
+.joinedOn {
+    font-family: var(--textfo);
+}
+
+.joinedOn h2{
+    font-family: var(--textfo-b);
+}
+
+
+.puzzle--stats {
+    background-color: #FFF7DC;
+    width: 95%;
+    padding: 1.2em;
+    border-radius: 20px;
+    margin: 1em auto;
+}
+
+.rankbox, .headers {
+    display: flex;
+}
+
+.headers {
+    font-size: 1.2rem;
+    width: 100%;
+    margin-bottom: 0.5em;
+}
+
+.rankbox {
+    font-size: 0.9rem;
+}
+
+.rankbox p, .headers p {
+    font-family: var(--textfo);
+    padding: 0.25em;
+    text-align: center;
+    width: calc(100% / 3)
+}
+
+.placeholder {
+    opacity: 0;
+}
+
+.overall {
+    display: flex;
+    justify-content: center;
+    gap: 4em;
+    margin: 2em;
+}
+
+.overall h2 {
+    font-family: var(--displayfo);
+}
+
+
+
+.line--h {
+    background-color: #362c1cd9;
+    width: 100%;
+    height: 0.1rem;
+}
+
+.seperator--h {
+    align-self: center;
+    margin-top: 1em;
+    width: 100%;
+    height: 0.1rem;
+    background-color: black;
+    border-radius: 20%;
+}
+
+.seperator--v {
+    align-self: center;
+    margin: 1em;
+    width: 0.1rem;
+    background-color: black;
+    border-radius: 20%;
+    height: 80%;
+}

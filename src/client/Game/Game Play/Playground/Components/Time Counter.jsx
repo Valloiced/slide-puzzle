@@ -1,8 +1,12 @@
-import React, { useEffect } from 'react'
+import React, { useEffect } from 'react';
+import '../../styles/playground.css'
 
-export default function Timecounter( {currentTime, updater} ) {
+export default function Timecounter( {currentTime, updater, isPaused} ) {
+    
     useEffect(() => {
         let timer = setInterval(() => {
+            if(isPaused) { return }
+
             updater(prev => prev += 1)
         }, 1000)
         
@@ -10,7 +14,7 @@ export default function Timecounter( {currentTime, updater} ) {
             clearInterval(timer)
         }
         
-    }, [])
+    }, [ isPaused ])
 
     let hours = Math.floor(currentTime / 3600)
 

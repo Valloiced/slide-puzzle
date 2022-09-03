@@ -10,6 +10,7 @@
 }
 
 .create--container h1, .create--container h2 {
+    font-family: var(--displayfo);
     font-size: 2rem;
     z-index: 1;
 }
@@ -28,7 +29,6 @@ form {
     width: 80%;
 }
 
-
 form input[type=text], form select, textarea { 
     background-color: yellow;
     padding: 1em;
@@ -36,6 +36,7 @@ form input[type=text], form select, textarea {
     border-radius: 10px;
     font-size: 1rem;
     font-weight: 700;
+    font-family: var(--textfo);
 }
 
 form label {
@@ -44,7 +45,51 @@ form label {
 }
 
 form select {
+    background-color: #fff;
     text-align: center;
+}
+
+form option {
+    font-family: var(--textfo-b);
+}
+
+form option:nth-child(1) {
+    background-color: #FFEB84;
+}
+
+form option:nth-child(2) {
+    background-color: #FFC46D;
+}
+
+form option:nth-child(3) {
+    background-color: #FF9254;
+}
+
+form option:nth-child(4) {
+    background-color: #FF7373;
+}
+
+form option:nth-child(5) {
+    background-color: #99FF89;
+}
+
+form option:nth-child(6) {
+    background-color: #61BDFF;
+}
+
+form option:nth-child(7) {
+    color: #fff;
+    background-color: #9B6DFF;
+}
+
+form option:nth-child(8) {
+    color: #fff;
+    background-color: #AE2AFF;
+}
+
+form option:nth-child(9) {
+    color: #fff;
+    background-color: #8300B0;
 }
 
 .flexed {

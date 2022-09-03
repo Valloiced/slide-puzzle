@@ -5,7 +5,8 @@
 }
 
 /* Main Body */
-.content--body {
+.main--body {
+    flex-direction: column;
     margin: 6em auto;
     width: 90%;
 }

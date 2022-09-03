@@ -1,0 +1,99 @@
+.puzzle--container h2 {
+    font-family: var(--displayfo-l);
+}
+
+.puzzle--wrapper {
+    display: flex;
+    align-items: center;
+    padding: 1em 1.5em;
+    width: 100%;
+    background-color: #fff2dfe3;
+    height: 90%;
+}
+
+.puzzle {
+    display: flex;
+    flex-direction: column;
+    border-radius: 20px;
+    box-shadow: 0px 0px 10px gray;
+}
+
+.card--info {
+    padding: 0.3em 1em 1em 1em;
+    background-color: #7BDE9C;
+    border-radius: 0 0 20px 20px;
+    transition: all 250ms;
+}
+
+
+.sub--info, .creator, .times--played, .date--added {
+    display: flex;
+    align-items: center;
+}
+
+.creator p, .times--played p, .date--added p {
+    font-family: var(--textfo);
+    font-size: 0.8rem;
+    margin-left: 0.8em;
+}
+
+.sub--info {
+    gap: 1.4em;
+}
+
+.icon {
+    width: 0.8rem;
+}
+
+.play {
+    width: 0;
+    height: 0;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-left: 20px solid black;
+}
+
+.puzzle--name {
+    font-family: var(--displayfo);
+    font-size: 1.2rem;
+    white-space: nowrap;
+    width: 90%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.play--button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 15vh;
+    transform: scale(0);
+    transition: all 300ms;
+}
+
+.puzzle:hover, .puzzle:hover > .card--info {
+    cursor: pointer;
+}
+
+.puzzle:hover > .card--info {
+    transform: translateY(-10px);
+}
+
+.puzzle--image:hover > .play--button {
+    border-radius: 20px;
+    background: rgba(0, 0, 0, 0.6);
+    transform: scale(1);
+}
+
+
+/* Swipper */
+.swiper {
+    padding: 0.5em;
+}
+
+.swiper-button-prev, .swiper-button-next {
+    font-weight: 700;
+    color: #fab959;
+    transform: scale(1.3);
+}

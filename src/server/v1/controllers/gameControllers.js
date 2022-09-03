@@ -1,8 +1,9 @@
 const router = require('express').Router()
-const { bindToSession, generatePattern } = require('../libs/handlerUtils')
+const { bindToSession, ensureAuthenticated } = require('../libs/handlerUtils')
+const { calculateScore, generatePattern } = require('../libs/gameUtils')
 
-const db     = require('../models/models')
-const { Puzzle, PuzzleStats, UserGameSession} = db.collections
+const db = require('../models/models')
+const { UserStats, Puzzle, PuzzleStats, UserGameSession, PuzzleLeaderboard} = db.collections
 
 router.get('/options', async (req, res) => {
     const pid = req.session.direct_to_puzzle || req.query.pid
@@ -35,8 +36,6 @@ router.get('/options', async (req, res) => {
     }
 })
 
-// TODO: change the error handler since error and null are not the same
-// Seperate shuffle to other file
 router.post('/create', async (req, res, next) => {
     const { gameSize, pid, p_statsID } = req.body
     const { isGuest, isLogin }         = req.session
@@ -107,7 +106,6 @@ router.post('/create', async (req, res, next) => {
 
     
     let save = bindToSession({ direct_to_puzzle: null, in_game: newGuestSession._id }, req)
-    console.log(newGuestSession)
 
     if(save){
         return res.json({
@@ -164,28 +162,33 @@ router.post('/continue/:sessionId', (req, res) => {
     })
 })
 
-router.put('/save-session', async (req, res) => {
+router.put('/save-session', ensureAuthenticated, async (req, res) => {
     const { sessionID, newPattern, newTime } = req.body
-
+    
     try {
         if(!sessionID){
             throw new Error("No session Id provided")
         }
-    
+
         let session = await UserGameSession.findById(sessionID)
     
         if(!session){
             throw new Error("No session found");
         }
+
+        if(session.isFinished){
+            throw new Error("Session already validated")
+        }
     
         if(session.pattern == newPattern || session.timeTaken == newTime){
             return res.send("No changes found")
         }
-    
+        
+        req.session.playTime += 6
         session.pattern = newPattern
         session.timeTaken = newTime
         session.lastSession = Date.now()
-    
+        
         await session.save()
     
         res.json({ saved: true });
@@ -196,8 +199,107 @@ router.put('/save-session', async (req, res) => {
     }
 })
 
-router.post('/validate', (req, res) => {
-    res.send("Bitch")
+router.put('/validate', ensureAuthenticated, async (req, res) => {
+    const { _id, puzzleID, gameSize, pattern, timeTaken } = req.body
+    const { username, UserStatsID } = req.user
+    
+    try {
+
+        if(!puzzleID || !timeTaken || !pattern){
+            throw new Error("Missing required fields")
+        }
+    
+        let sortedPattern = [...pattern].sort((a, b) => a > b ? 1 : -1)
+        for(let i = 0; i < sortedPattern.length; i++){
+            if(pattern[i] != sortedPattern[i]){
+                throw new Error("Pattern provided is unsorted or unavailable ")
+                break
+            }
+        }
+
+    
+        /** Update Session */
+        let session = await UserGameSession.findById(_id)
+    
+        if(!session){
+            throw new Error("No session found")
+        }
+    
+        session.pattern = pattern
+        session.timeTaken = timeTaken
+        session.isFinished = true
+        session.lastSession = Date.now()
+        
+    
+        const score = calculateScore(gameSize, timeTaken) // Mod Multiplier later
+    
+        let u_stats = await UserStats.findById(UserStatsID)
+
+        let timeByGameSize = u_stats.bestTimeByGameSizes[`${gameSize}x${gameSize}`]
+    
+        if(u_stats.numOfPuzzlesSolved == 0){
+            u_stats.bestTime = timeTaken
+        } else {
+            u_stats.bestTime = Math.min(u_stats.bestTime, timeTaken) 
+        } 
+
+        if(timeByGameSize == 0) {
+            u_stats.bestTimeByGameSizes[`${gameSize}x${gameSize}`] = timeTaken
+        } else {
+            u_stats.bestTimeByGameSizes[`${gameSize}x${gameSize}`] = Math.min(timeByGameSize, timeTaken)
+        }
+         
+        u_stats.numOfPiecesFinishedByGameSizes[`${gameSize}x${gameSize}`]++   
+        u_stats.numOfPuzzlesSolved++  
+        u_stats.skillPoint += score
+        
+    
+        /** Update Puzzle Stats */
+        let p_stats = await PuzzleStats.findOne({ puzzleID: puzzleID })
+    
+        p_stats.numOfPlayersFinished++
+    
+    
+    
+        /** Update Leaderboard */
+        let p_leaderboard = await PuzzleLeaderboard.findById(p_stats.leaderboardID)
+    
+        let rankings = p_leaderboard.gameSize[`${gameSize}x${gameSize}`]
+    
+        for(let i = 0; i < rankings.length; i++){
+            if(rankings[i].timeTaken <= timeTaken){
+                const toAdd = {
+                    rank: i + 1,
+                    username: username,
+                    skillPoint: score,
+                    timeTaken: timeTaken,
+                    // Add for mods later
+                }
+                rankings[i].splice(i + 1, 0, toAdd)
+                session.ranking = i + 1
+                break;
+            }
+        }
+   
+        p_leaderboard.gameSize[`${gameSize}x${gameSize}`] = rankings
+    
+        const savedSession = await session.save()
+        const savedUserstats = await u_stats.save()
+        const savedPuzzleStats = await p_stats.save()
+        const savedPuzzleLeaderboard = await p_leaderboard.save()
+    
+        if(!savedSession || !savedUserstats || !savedPuzzleStats || !savedPuzzleLeaderboard) {
+            throw new Error("Unable to save your session")
+        }
+    
+        return res.json({ success: true })
+
+    }
+    catch(e) {
+        console.log(e)
+        return res.status(400).json({ success: false })
+    }
+
 })
 
 module.exports = router;

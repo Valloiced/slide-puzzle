@@ -9,15 +9,19 @@ import '../styles/playground.css';
 
 export default function Playground({ isGuest, sessionID, image, gameSize, timeTaken, pattern, isFinished, setGame }){
     
+    /** For updating the DOM */
     let canvasRef = useRef(null);
     let tilesContainerRef = useRef(null)
 
+    /** Current Puzzle Store */
     let currTilesRef = useRef([]);
     let [ currTiles, setCurrTiles] = useState([])
     let [ currPattern, setCurrPattern ] = useState([])
 
+    /** For controller */
     let [ currTilePos, setCurrTilePos ] = useState(0)
 
+    /** Counter State */
     let [ currTime, setCurrTime ] = useState(0)
 
     /** Setup the puzzle board */
@@ -70,22 +74,11 @@ export default function Playground({ isGuest, sessionID, image, gameSize, timeTa
      
     }, [currPattern, currTime])
     
-    useEffect(() => {
-        if(isFinished && !isGuest){
-            axios.post('/game/validate', {
-                sessionID: sessionID,
-                pattern: currPattern,
-                timeTaken: currTime
-            })
-            .then(res => {
-                console.log(res)
-                setGame(false)
-            })
-        }
-    
+    /** Sorted Puzzle Observer/Checker */
+    useEffect(() => {  
         winChecker(currPattern, setGame)    
     }, [currPattern])
-
+    
     
     let shuffle = () => {
         let tempPattern = [...currPattern]
@@ -99,10 +92,12 @@ export default function Playground({ isGuest, sessionID, image, gameSize, timeTa
         = [tempPattern[randomIndex], tempPattern[currentIndex]];
         }
 
+        // Reset everything for the puzzle
         setCurrTiles([])
         setCurrPattern(tempPattern)
         currTilesRef.current = []
 
+        // Generate a new one based on the new shuffled pattern
         generate(
             canvasRef, 
             tilesContainerRef, 
@@ -118,7 +113,7 @@ export default function Playground({ isGuest, sessionID, image, gameSize, timeTa
     return (
         <div className='playground'>
 
-            {!isFinished && <Timecounter currentTime={currTime} updater={setCurrTime} />}
+            <Timecounter currentTime={currTime} updater={setCurrTime} isPaused={isFinished} />
             <canvas ref={canvasRef} className="hidden--canvas" />
 
             <div className="border">
@@ -130,16 +125,6 @@ export default function Playground({ isGuest, sessionID, image, gameSize, timeTa
         </div>
     )
 }
-
-/** Helpers */
-
-// function createBlankImage(ctx, dimensions){
-//     let blankTile = ctx.createImageData(dimensions, dimensions)
-//         for(let i = 0; i < blankTile.data.length; i++){
-//             blankTile.data[i] = 255
-//     }
-//     return blankTile
-// }
 
 function formatTo2d(pattern, gameSize){
     let newFormat = []
